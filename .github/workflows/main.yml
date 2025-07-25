@@ -1,4 +1,4 @@
-name: CI for Dev
+name: CI for MAIN
 
 # Controls when the action will run. 
 on:
