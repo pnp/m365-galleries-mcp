@@ -1,0 +1,61 @@
+name: CI for Dev
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push events but only for the dev branch
+  push:
+    branches: [ test ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  AZURE_SLOT_NAME: test                               # The name of the target Deployment Slot
+  AZURE_WEBAPP_NAME: m365-galleries-mcp               # The name of the Web App for hosting WebAPI
+  DOTNET_VERSION: '10.0.x'                            # The dot net version to use
+
+jobs:
+  # This job builds the Web App project
+  build-webapp:
+    runs-on: self-hosted
+
+    steps:
+      - name: 'Build Web App with dotnet ${{env.DOTNET_VERSION}}'
+        run: dotnet build --configuration Release src/SampleGalleriesMCPServerHttp/SampleGalleriesMCPServerHttp.csproj
+
+      - name: Publish Web App project
+        run: dotnet publish -c release -o '${{env.DOTNET_ROOT}}/webapp' src/SampleGalleriesMCPServerHttp/SampleGalleriesMCPServerHttp.csproj
+
+      # Now upload all the artifacts for publishing
+      - name: Upload Web App artifact for deployment job
+        uses: actions/upload-artifact@v4
+        with:
+          name: webapp-artifacts
+          path: ${{env.DOTNET_ROOT}}/webapp
+
+  # This job deploys the Web App project
+  deploy-webapp:
+    runs-on: self-hosted
+    needs: build-webapp
+
+    steps:
+      - name: Login via Azure CLI for deployment
+        uses: azure/login@v2
+        with:
+          auth-type: IDENTITY
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          enable-AzPSSession: true
+
+      - name: Download Web App artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: webapp-artifacts
+          path: '${{env.DOTNET_ROOT}}/webapp'
+
+      - name: 'Deploy Web App to Azure Web App ${{env.AZURE_SLOT_NAME}}'
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{env.AZURE_WEBAPP_NAME}}
+          slot-name: ${{env.AZURE_SLOT_NAME}}
+          package: '${{env.DOTNET_ROOT}}/webapp'
