@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleGalleriesMCPServerHttp", "SampleGalleriesMCPServerHttp.csproj", "{3ED6EBCC-B49D-A358-5781-B38EE13DF05B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3ED6EBCC-B49D-A358-5781-B38EE13DF05B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3ED6EBCC-B49D-A358-5781-B38EE13DF05B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3ED6EBCC-B49D-A358-5781-B38EE13DF05B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3ED6EBCC-B49D-A358-5781-B38EE13DF05B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CE59AED9-614A-4A8C-8C94-3E5F1C3BCCA7}
+	EndGlobalSection
+EndGlobal
