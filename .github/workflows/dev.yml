@@ -23,6 +23,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{env.DOTNET_VERSION}}
+
       - name: 'Build Web App with dotnet ${{env.DOTNET_VERSION}}'
         run: dotnet build --configuration Release ./src/SampleGalleriesMCPServerHttp/SampleGalleriesMCPServerHttp.csproj
 
