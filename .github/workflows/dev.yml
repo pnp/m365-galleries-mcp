@@ -21,10 +21,10 @@ jobs:
 
     steps:
       - name: 'Build Web App with dotnet ${{env.DOTNET_VERSION}}'
-        run: dotnet build --configuration Release src/SampleGalleriesMCPServerHttp/SampleGalleriesMCPServerHttp.csproj
+        run: dotnet build --configuration Release ./src/SampleGalleriesMCPServerHttp/SampleGalleriesMCPServerHttp.csproj
 
       - name: Publish Web App project
-        run: dotnet publish -c release -o '${{env.DOTNET_ROOT}}/webapp' src/SampleGalleriesMCPServerHttp/SampleGalleriesMCPServerHttp.csproj
+        run: dotnet publish -c release -o '${{env.DOTNET_ROOT}}/webapp' ./src/SampleGalleriesMCPServerHttp/SampleGalleriesMCPServerHttp.csproj
 
       # Now upload all the artifacts for publishing
       - name: Upload Web App artifact for deployment job
