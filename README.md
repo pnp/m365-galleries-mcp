@@ -1,6 +1,6 @@
 # Microsoft 365 Galleries MCP Servers
 
-MCP Servers for the Microsoft 365 & Power Platform Community Samples Gallery
+MCP Servers for the Microsoft 365 & Power Platform Community Samples Gallery.
 
 ## Overview
 
