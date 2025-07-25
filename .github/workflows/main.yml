@@ -1,0 +1,74 @@
+name: CI for Dev
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push events but only for the dev branch
+  push:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  AZURE_WEBAPP_NAME: m365-galleries-mcp               # The name of the Web App for hosting WebAPI
+  DOTNET_VERSION: '10.0.x'                            # The dot net version to use
+
+jobs:
+  # This job builds the Web App project
+  build-webapp:
+    runs-on: self-hosted
+
+    steps:
+      # This step checks out the repository so that the workflow can access its contents
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # This step sets up the .NET environment required for building the project
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{env.DOTNET_VERSION}}
+
+      # This step builds the Web App project using the specified .NET version
+      - name: 'Build Web App with .NET ${{env.DOTNET_VERSION}}'
+        run: dotnet build --configuration Release ./src/SampleGalleriesMCPServerHttp/SampleGalleriesMCPServerHttp.csproj
+
+      # This step publishes the Web App project, preparing it for deployment
+      - name: Publish Web App project
+        run: dotnet publish -c release -r win-x64 --self-contained true -o '${{env.DOTNET_ROOT}}/webapp' ./src/SampleGalleriesMCPServerHttp/SampleGalleriesMCPServerHttp.csproj
+
+      # Now upload all the artifacts for publishing
+      - name: Upload Web App artifact for deployment job
+        uses: actions/upload-artifact@v4
+        with:
+          name: webapp-artifacts
+          path: ${{env.DOTNET_ROOT}}/webapp
+
+  # This job deploys the Web App project
+  deploy-webapp:
+    runs-on: self-hosted
+    needs: build-webapp
+
+    steps:
+      # Login to Azure using the Azure CLI for deployment
+      - name: Login via Azure CLI for deployment
+        uses: azure/login@v2
+        with:
+          auth-type: IDENTITY
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          enable-AzPSSession: true
+
+      # Download the Web App artifact from the build job
+      - name: Download Web App artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: webapp-artifacts
+          path: '${{env.DOTNET_ROOT}}/webapp'
+
+      # Deploy the Web App to the specified Azure slot
+      - name: 'Deploy Web App to Azure Web App ${{env.AZURE_SLOT_NAME}}'
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{env.AZURE_WEBAPP_NAME}}
+          package: '${{env.DOTNET_ROOT}}/webapp'
