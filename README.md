@@ -18,6 +18,8 @@ This repository contains two implementations of the same Model Context Protocol 
 - **Use Case**: Perfect for web-based applications and services that require HTTP-based communication
 - **Communication**: Uses HTTP streaming for real-time message exchange
 
+You can consume this MCP server over HTTP at the following public URL: [https://m365-galleries-mcp-edaufudugfc4c8hy.centralus-01.azurewebsites.net](https://m365-galleries-mcp-edaufudugfc4c8hy.centralus-01.azurewebsites.net).
+
 ## Functionality
 
 Both MCP servers provide the same core functionality through the following tools:
