@@ -4,7 +4,11 @@ MCP Servers for the Microsoft 365 & Power Platform Community Samples Gallery.
 
 ## Overview
 
-This repository contains two implementations of the same Model Context Protocol (MCP) Server that provides access to the Microsoft 365 & Power Platform Community Samples Gallery. Both projects expose identical functionality but use different communication protocols:
+This repository contains two implementations of the same Model Context Protocol (MCP) Server that provides access to the Microsoft 365 & Power Platform Community Samples Gallery. 
+
+![Microsoft 365 & Power Platform Samples Gallery MCP Server preview in GitHub Copilot](./assets/MCP-server-GHCP.png)
+
+Both projects expose identical functionality but use different communication protocols:
 
 ## Projects
 
